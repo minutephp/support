@@ -39,7 +39,7 @@
                                         <p class="help-block text-sm">
                                             <i class="fa fa-lightbulb-o"></i>
                                             <b><span translate="">Tip:</span></b>
-                                            <span translate="">Phrasing the issue as question like "How do I..?", or "Is it possible to..?", "What does..?" makes it easier for us to understand the
+                                            <span translate="">Phrasing the issue as a question like "How do I..?", or "Is it possible to..?", "What does..?" makes it easier for us to understand the
                                                 problem
                                                 quickly!</span>
                                         </p>
@@ -121,15 +121,17 @@
                     <h1>&nbsp;</h1>
                 </section>
                 <section class="content">
-                    <div class="box box-solid">
+                    <div class="box box-danger">
                         <div class="box-header with-border">
-                            <span translate="">Related questions</span>
+                            <b translate="">Related questions</b>
                         </div>
 
                         <div class="box-body">
                             <div ng-repeat="page in pages">
-                                <h4>{{page.content.data_json.model.local.about.title || page.name}}</h4>
-                                <p>{{page.content.data_json.model.local.about.description}}</p>
+                                <h4>{{$index + 1}}. {{page.name | ucfirst}}</h4>
+                                <p ng-show="!!page.description">{{page.description | truncate:50:'..'}}</p>
+                                <p><a class="btn btn-flat btn-default btn-xs" ng-href="/members/kb/{{page.support_page_id}}"><i class="fa fa-eye"></i> <span translate="">View page</span></a></p>
+                                <hr ng-show="!$last">
                             </div>
                         </div>
                     </div>

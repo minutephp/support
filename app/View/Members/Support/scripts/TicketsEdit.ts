@@ -29,10 +29,11 @@ module App {
 
             if (title && title.length > 3) {
                 let keywords = title.split(/\W+/).filter((f) => f.length > 2).map((f) => '%' + f + '%');
-                let search = {columns: 'keywords', operator: 'LIKE', value: keywords};
+                let search = {columns: 'name,description,keywords', operator: 'LIKE', value: keywords};
 
                 if (keywords.length > 0) {
-                    this.$scope.pages.setSearch(search).reloadAll(true).then(() => this.$scope.data.showSearch = true);
+                    console.log("this.$scope.pages: ", this.$scope.pages);
+                    this.$scope.pages.setSearch(search).then(() => this.$scope.data.showSearch = true);
                 }
             }
         };
@@ -49,10 +50,12 @@ module App {
         };
 
         save = () => {
-            let ticket = this.$scope.ticket;
-            this.$scope.data.msg = this.browserInfo();
-            console.log("this.$scope.data.msg: ", this.$scope.data.msg);
-            ticket.save(this.gettext('Ticket created')).then(this.send);
+            this.$scope.session.checkRegistration().then(() => {
+                let ticket = this.$scope.ticket;
+                this.$scope.data.msg = this.browserInfo();
+                //console.log("this.$scope.data.msg: ", this.$scope.data.msg);
+                ticket.save(this.gettext('Ticket created')).then(this.send);
+            });
         };
 
         browserInfo = () => {

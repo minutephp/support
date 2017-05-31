@@ -15,16 +15,23 @@ module Admin {
         };
 
         saveAsPage = () => {
-            this.$ui.prompt(this.gettext('Enter new page slug'), '/faq/' + this.slugify(this.$scope.ticket.title)).then(
-                (slug) => {
-                    this.$scope.pages.create().attr('name', this.$scope.ticket.title).attr('slug', slug).attr('type', 'support').save(this.gettext('Support page created.')).then((result) => {
-                        let url = '/admin/pages/edit/' + result.item.attr('page_id');
+            let ticket = this.$scope.ticket;
+            let title = ticket.title;
+            let reply = ticket.replies[0].attr('reply_safe');
+            let html = `## ${title}\n\n${reply}`;
+            let page = this.$scope.pages.create().attr('name', title).attr('html', html).attr('enabled', 'true');
+
+            this.$ui.popupUrl('/support-page-popup.html', false, null, {ctrl: this, page: page}).then((page) => {
+                if (page && (page instanceof Minute.Item)) {
+
+                    page.save(this.gettext('Support page created.')).then((result) => {
+                        let url = '/admin/support/pages/edit/' + result.item.attr('support_page_id');
                         let text = this.gettext('Click here to edit page');
                         this.$ui.toast(`<a href="${url}" target="_blank"><i class="fa fa-external-link"></i> ${text}</a>`, '', true, 0);
                         window.open(url, '_blank');
                     });
                 }
-            );
+            });
         };
 
         slugify = (Text) => {

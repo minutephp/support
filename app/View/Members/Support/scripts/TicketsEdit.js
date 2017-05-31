@@ -14,9 +14,10 @@ var App;
                 _this.$scope.data.showSearch = false;
                 if (title && title.length > 3) {
                     var keywords = title.split(/\W+/).filter(function (f) { return f.length > 2; }).map(function (f) { return '%' + f + '%'; });
-                    var search = { columns: 'keywords', operator: 'LIKE', value: keywords };
+                    var search = { columns: 'name,description,keywords', operator: 'LIKE', value: keywords };
                     if (keywords.length > 0) {
-                        _this.$scope.pages.setSearch(search).reloadAll(true).then(function () { return _this.$scope.data.showSearch = true; });
+                        console.log("this.$scope.pages: ", _this.$scope.pages);
+                        _this.$scope.pages.setSearch(search).then(function () { return _this.$scope.data.showSearch = true; });
                     }
                 }
             };
@@ -30,10 +31,12 @@ var App;
                 }
             };
             this.save = function () {
-                var ticket = _this.$scope.ticket;
-                _this.$scope.data.msg = _this.browserInfo();
-                console.log("this.$scope.data.msg: ", _this.$scope.data.msg);
-                ticket.save(_this.gettext('Ticket created')).then(_this.send);
+                _this.$scope.session.checkRegistration().then(function () {
+                    var ticket = _this.$scope.ticket;
+                    _this.$scope.data.msg = _this.browserInfo();
+                    //console.log("this.$scope.data.msg: ", this.$scope.data.msg);
+                    ticket.save(_this.gettext('Ticket created')).then(_this.send);
+                });
             };
             this.browserInfo = function () {
                 var ua = window['detect'].parse(navigator.userAgent);

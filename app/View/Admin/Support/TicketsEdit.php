@@ -167,4 +167,57 @@
             </div>
         </div>
     </script>
+
+    <script type="text/ng-template" id="/support-page-popup.html">
+        <div class="box">
+            <div class="box-header with-border">
+                <b class="pull-left"><span translate="">Create support page</span></b>
+                <a class="pull-right close-button" href=""><i class="fa fa-times"></i></a>
+                <div class="clearfix"></div>
+            </div>
+
+            <form class="form-horizontal" name="supportForm">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="name"><span translate="">Name:</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="name" placeholder="Enter page name" ng-model="page.name" ng-required="true">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="description"><span translate="">Description:</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="description" placeholder="Enter Description" ng-model="page.description" ng-required="false">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="keywords"><span translate="">Keywords:</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="keywords" placeholder="Enter Keywords" ng-model="page.keywords" ng-required="true">
+                            <p class="help-block"><span translate="">(comma separated list of keywords)</span></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="html">
+                            <span translate="">HTML</span>
+                        </label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" rows="10" placeholder="Enter HTML" ng-model="page.html" ng-required="true"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="box-footer with-border">
+                    <button type="button" class="btn btn-flat btn-primary pull-right" ng-disabled="!supportForm.$valid" ng-click="hide(page)">
+                        <i class="fa fa-check-circle"></i> <span translate>Create page</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </script>
+
 </div>

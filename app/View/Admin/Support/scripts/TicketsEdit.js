@@ -14,13 +14,20 @@ var Admin;
                 _this.$ui.popupUrl('/templates-popup.html', false, null, { ctrl: _this });
             };
             this.saveAsPage = function () {
-                _this.$ui.prompt(_this.gettext('Enter new page slug'), '/faq/' + _this.slugify(_this.$scope.ticket.title)).then(function (slug) {
-                    _this.$scope.pages.create().attr('name', _this.$scope.ticket.title).attr('slug', slug).attr('type', 'support').save(_this.gettext('Support page created.')).then(function (result) {
-                        var url = '/admin/pages/edit/' + result.item.attr('page_id');
-                        var text = _this.gettext('Click here to edit page');
-                        _this.$ui.toast("<a href=\"" + url + "\" target=\"_blank\"><i class=\"fa fa-external-link\"></i> " + text + "</a>", '', true, 0);
-                        window.open(url, '_blank');
-                    });
+                var ticket = _this.$scope.ticket;
+                var title = ticket.title;
+                var reply = ticket.replies[0].attr('reply_safe');
+                var html = "## " + title + "\n\n" + reply;
+                var page = _this.$scope.pages.create().attr('name', title).attr('html', html).attr('enabled', 'true');
+                _this.$ui.popupUrl('/support-page-popup.html', false, null, { ctrl: _this, page: page }).then(function (page) {
+                    if (page && (page instanceof Minute.Item)) {
+                        page.save(_this.gettext('Support page created.')).then(function (result) {
+                            var url = '/admin/support/pages/edit/' + result.item.attr('support_page_id');
+                            var text = _this.gettext('Click here to edit page');
+                            _this.$ui.toast("<a href=\"" + url + "\" target=\"_blank\"><i class=\"fa fa-external-link\"></i> " + text + "</a>", '', true, 0);
+                            window.open(url, '_blank');
+                        });
+                    }
                 });
             };
             this.slugify = function (Text) {
